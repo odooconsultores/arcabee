@@ -1,0 +1,36 @@
+version: '3.5'
+services:
+  web-arcabee-14:
+    image: odoo:14
+
+    depends_on:
+      - db-arcabee-14
+    ports:
+      - "23500:8069"
+    volumes:
+      - odoo-web-arcabee:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./custom:/mnt/custom-addons
+      - ./terceros14_community:/mnt/terceros-addons
+      - ./proandsysdte14:/mnt/proandsys-addons
+    #environment:
+      #- HOST: # Defaults to db.
+      #- PORT: # Defaults to 5432.
+      #- USER: # Defaults to odoo.
+      #- PASSWORD: #Defaults to odoo.
+    environment:
+      - PYTHONUNBUFFERED=0
+  db-arcabee-14:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-arcabee:/var/lib/postgresql/data/pgdata
+volumes:
+  odoo-web-arcabee:
+  odoo-db-arcabee:
+
+#ambiente con repositorio como en ambiente de pruebas es community
